@@ -1,0 +1,67 @@
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	2.Fragments
+_____________________________________________________________________
+>los fragments van a ser manejados a traves de frameLayout en el activity,
+en el activity que va a manejar los fragments, le colocamos identificacion(ID)
+ al fragmeLayout
+	<FrameLayout
+                		android:id="@+id/mainFragmentLayout"
+> se declaran variables para cada fragment
+	Flogo fl;
+
+> en el metodo onCreate inicializamos esas variables
+	fl = new Flogo();
+
+>Colocamos el fragment con el que inicia el activity, con el id del framelayout
+  y la variable del fragment en en .add()
+	getSupportFragmentManager().FragmnetTransaction()
+	  .add(R.id.name_frameLayout, fl).commit();
+
+>para el metodo de cambio de fragment
+   public void onclick(View view){
+        FragmentTransaction transaccion = getSupportFragmentManager().beginTransaction();
+        switch (view.getId()){
+            case R.id.bt2_ma:
+                transaccion.replace(R.id.mainFragmentLayout, f_mainlp);
+                break;
+           case R.id.bt3_ma:
+               transaccion.replace(R.id.mainFragmentLayout, f_mainlp2);
+             break;
+        } transaccion.commit();
+    }
+
+-----------------------------------------------------------------------------------------
+
+> MAPA
+  el mapa es montado en un Fragment con su FrameLayout y <fragment>  en el
+  archivo .xml,  por otro lado el activity que recive lo hace tambien en un <fragment>
+  ambos wigets fragments tiene atributo name, pero se dirigen a ubicaciones diferen
+  tes, ademas el activity presenta el atributo tools,
+
+  el activity:
+   android:name="com.tracking.beta_tas.Fragments.FragMapa"
+   tools:layout="@layout/fragment_frag_mapa"
+
+  el fragment(mapa):
+  android:name="com.google.android.gms.maps.SupportMapFragment"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
