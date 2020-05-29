@@ -39,19 +39,26 @@ en el activity que va a manejar los fragments, le colocamos identificacion(ID)
   archivo .xml,  por otro lado el activity que recive lo hace tambien en un <fragment>
   ambos wigets fragments tiene atributo name, pero se dirigen a ubicaciones diferen
   tes, ademas el activity presenta el atributo tools,
+  ademas ambos tienen su ID
 
   el activity:
+   android:id="@+id/marco_mapa_ac"
    android:name="com.tracking.beta_tas.Fragments.FragMapa"
    tools:layout="@layout/fragment_frag_mapa"
 
   el fragment(mapa):
+  android:id="@+id/map"
   android:name="com.google.android.gms.maps.SupportMapFragment"
 
+> en el codigo del activity que recibe, se ubica normal, primero haciendo la declara
+  cion de una variable para la clase del fragment, luego iniciandola y ubicandola
+  con  getSupportFragmentManager()
+
+	 getSupportFragmentManager().beginTransaction()
+	   .replace(R.id.marco_mapa_ac, fragMapa ).commit();
 
 
-
-
-
+--------------------------------------------------------------------------------------------------
 
 
 
