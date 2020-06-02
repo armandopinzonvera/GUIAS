@@ -1,0 +1,98 @@
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	3_SQLite
+____________________________________________________________________________
+
+Es un sistema de gestion de bases de datos relacional (RDBMS), interactua sobre la bbdd,
+Para trabajar en RDBMS se debe usar SQL o lenguaje de consulta, SQLite es de codigo
+abierto disponible en dominio publico, mientras MySQL es codigo abierto pero propiedad
+de Oracle.
+SQLite es una base de datos sin servidor e independiente, es deicr una bbdd integrada,
+es decir que se ejecuta como parte de la aplicacion, mientras MySQL requiere un servidor 
+para ejecutarse,
+
+SQLite admite estos tipos de datos: Blob, Integer, Null, Text, Real.
+
+La biblioteca SQLite tiene un tamaño de aproximadamente 250 KB, mientras que el servidor 
+MySQL tiene aproximadamente 600 MB.
+--------------------------------------------------
+*> se crea una clase que va a funcionar como conexion a la base de datos, la cual va a heredar
+ de SQLiteOpenHelper
+
+	public class ConexionSQLite extends SQLiteOpenHelper
+--------------------------------------------------
+*> se indica que integre los metodos que trae y el constructor, con alt + enter
+
+ public ConexionSQLite(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
+        super(context, name, factory, version);
+    }
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+    }
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+    }
+}
+
+------------------------------------------------------
+*>en la 
+
+
+----------------------------------------------------
+
+> para fechas, el formato en .java es Long, 
+
+
+package myPackage;
+import java.util.Date;
+
+public class Foo {
+   public static void main(String args[]) {
+
+      // You create a new date object and assign it to the sysdate
+      Date sysdate = new Date();
+
+      // You are now displaying your time and date using toString()
+      System.out.println(sysdate.toString());
+   }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

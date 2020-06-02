@@ -36,9 +36,9 @@ en el activity que va a manejar los fragments, le colocamos identificacion(ID)
 
 > MAPA
   el mapa es montado en un Fragment con su FrameLayout y <fragment>  en el
-  archivo .xml,  por otro lado el activity que recive lo hace tambien en un <fragment>
+  archivo .xml,  por otro lado el activity que recibe lo hace tambien en un <fragment>
   ambos wigets fragments tiene atributo name, pero se dirigen a ubicaciones diferen
-  tes, ademas el activity presenta el atributo tools,
+  tes, ademas el activity presenta el atributo tools y name,
   ademas ambos tienen su ID
 
   el activity:
@@ -61,6 +61,83 @@ en el activity que va a manejar los fragments, le colocamos identificacion(ID)
 --------------------------------------------------------------------------------------------------
 
 
+  LISTVIEW DENTRO DE FREGMENT CON EVENTO ON CLICK
+
+-----------------------------------------------------------
+1. en el fragment.java, creamos las variables correspondientes a la conexion BBDD,
+en enlace con el listView del fragment, y dos arrays para coger la info de la BBDD
+y pasarla al lisView
+
+ 	  ListView listView_cont;
+   	  ArrayList<String> listaInformacion;
+   	  ArrayList<ClasEntidades> listaProyectos;
+    	  ClasConexionSQLi conn;
+
+*> en el metodo onCreateView cambiamos la informacion que por defecto viene en el 
+return, colocandola en un elemento view
+
+  public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+  
+  View view = inflater.inflate(R.layout.fragment_frag_mainlp, container, false);
+  return view;
+
+*> en el metodo onCreateView traemos la conexion BBDD, relacionamos la variable
+ListView creada con la correspondiente del .xml, y creamos una instancia del metodo
+de consulta que posteriormente vamos a crear de manera automatica(OJO: el findView
+tiene que venir con el objeto view)
+
+        conn = new ClasConexionSQLi(getContext(), ClasUtilidades.BBDD_TAS, null, 1);
+        listView_cont = (ListView) view.findViewById(R.id.lv1_fragmainlp);
+        consultarListasProyectos();
+
+*> en el metodo onCreateView creamos el adaptador para los datos
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, listaInformacion);
+        listView_cont.setAdapter(adapter);
+
+*> en el metodo onCreateView creamos el metodo para el click de los elementos del listView
+(OJO: el metodo se crea automatico, al colocar "new AdapterView")
+
+    listView_cont.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(parent.getContext(), "Esta es la Posicion = "+parent.getItemAtPosition(position).toString(), Toast.LENGTH_LONG).show();
+            }
+        });
+
+
+*> agregamos las tecnicas al metodo consultarListasProyectos(), este metodo lo
+instanciamos en el metodo anterior y lo generamos automaticamente, al cual le 
+generamos al final un metodo llamado obtenerLista()
+
+    private void consultarListasProyectos() {
+
+        SQLiteDatabase db = conn.getReadableDatabase();
+        ClasEntidades entidades = null;
+        listaProyectos = new ArrayList<ClasEntidades>();
+        Cursor cursor = db.rawQuery("SELECT * FROM "+ClasUtilidades.BBDD_TAS, null);
+
+        while(cursor.moveToNext()){
+        entidades = new ClasEntidades();
+        entidades.setNombre_muestreo(cursor.getString(1));
+        entidades.setId_transecto(cursor.getString(2));
+
+        listaProyectos.add(entidades);
+        }
+            optenerLista();
+    }
+ 
+*>  agregamos las tecnicas al metodo optenerLista(), este metodo lo
+instanciamos en el metodo anterior y lo generamos automaticamente,
+  
+    private void optenerLista() {
+
+        listaInformacion = new ArrayList<String>();
+        for(int i= 0; i<listaProyectos.size(); i++){
+            listaInformacion.add(listaProyectos.get(i).getNombre_muestreo()+" - "+listaProyectos.get(i).getId_transecto());
+        }
+    }
 
 
 

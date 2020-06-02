@@ -1,0 +1,328 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+5. Crear mapa GPS
+
+_____________________________________________________________________________
+
+1. agregamos las librerias (google.play.service, location, utils, volley  ) del proyecto 
+en el /build.gradle/, que se descargan en el sigueinte URL, el link para la libreria
+util, se encuentra en github, hasta alla nos envia la pagina oficial de android
+
+  *el google play service se instala desdes /tools/SDK manager/Appearance & behavior
+    /android SDK > SDK tool, (verificamos que este installada), ademas se va a 
+    file/project structure/dependencias/(se observa si ya esta, y si no..)/ +/ y
+  escribimos: com.google.android.gms:play-services:12.0.1 /aply/(OJO: esa implemen
+  tacion de play services, inclye todos los servicios)
+
+
+	https://developers.google.com/android/guides/setup
+	https://developers.google.com/maps/documentation/android-sdk/utility
+	https://github.com/googlemaps/android-maps-utils
+	https://developer.android.com/training/volley
+                                                         _______//____//____
+	
+	dependencies {
+	   implementation 'com.google.android.gms:play-services:12.0.1'
+  	   implementation 'com.google.maps.android:android-maps-utils:1.2.1'
+ 	   implementation 'com.android.volley:volley:1.1.1'
+	}				> SYNC NOW <
+__________________________
+2. Agregar permisos en el Manifest:
+
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.tracking.beta_tas">
+
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+
+_________________________
+3. crear el proyecto en la consola de google play para obtener la API
+ en google cloud platform: /panel de control/
+
+	https://developers.google.com/maps/documentation/android-sdk/get-api-key
+	https://console.cloud.google.com/google/maps-apis/new?project=i-incentive-276522&folder=&organizationId=
+	
+	#en el google cloud plaform, se inicia creando o eligiendo el proyecto en
+	 el item superior izquierdo, luego, menu/ APIs y servicios/ credenciales/
+	/crear credenciales/claves de api
+
+	AIzaSyDdh_4Rc1m6MhTzK2uAq5m34Pj-1A6LNa8
+_______________________________________
+4. agregamos la API_KEY en el manifest
+
+     <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDdh_4Rc1m6MhTzK2uAq5m34Pj-1A6LNa8"/>
+
+    </application>
+
+
+-----------------------------------------------------------------------------------------
+
+> MAPA-FRAGMENT
+  el mapa es montado en un Fragment con su FrameLayout y <fragment>  en el
+  archivo .xml,  por otro lado el activity que recibe lo hace tambien en un <fragment>
+  ambos wigets fragments tiene atributo name, pero se dirigen a ubicaciones diferen
+  tes, ademas el activity presenta el atributo tools y name,
+  ademas ambos tienen su ID
+
+  el activity:
+   android:id="@+id/marco_mapa_ac"
+   android:name="com.tracking.beta_tas.Fragments.FragMapa"
+   tools:layout="@layout/fragment_frag_mapa"
+
+  el fragment(mapa):
+  android:id="@+id/map"
+  android:name="com.google.android.gms.maps.SupportMapFragment"
+
+> en el codigo del activity que recibe, se ubica normal, primero haciendo la declara
+  cion de una variable para la clase del fragment, luego iniciandola y ubicandola
+  con  getSupportFragmentManager()
+
+	 getSupportFragmentManager().beginTransaction()
+	   .replace(R.id.marco_mapa_ac, fragMapa ).commit();
+
+____________________________________________
+*> en el java.class del activity con el que vamos a enlazar el fragment, hacemos 
+  la relacion, dentro del metodo onCreate(), primero instanciamos la clase.java
+  del fragmento, en este caso llamada FragMapa(), luego colocamos el metodo de
+  getSupport.., al cual se le coloca el id del layout-root(layoutmapa) y el id del layout-
+  fragment del activity que recibe(f_mainmapa)
+
+	protected void onCreate() {
+		Fragment fragmento = new FragMapa();
+		 getSupportFragmentManager().beginTransaction()
+			.replace(R.id.contenedorMapa, fragmento).commit();
+
+________________________________
+
+ *> en la clase del fragment del mapa se hace implement de onMapReadyCallback
+
+public class FragMapa extends Fragment implements OnMapReadyCallback y se le indica que impleme
+nte los metodos, a lo que agrega onMapReady(){}
+
+
+_______________________________
+6. en el archivo .java del fragment_mapa, en el metodo onCreateView, remplazamos el return por un view, 
+y colocamos los siguientes metodos (OJO: nos sale un error en la ultima linea, y en las opciones del foco rojo,
+seleccionamos: make .. implement..>> con lo cual nos cre el metodo: onMapReady)
+(OJO: tener pendiente que el objeto "map" defindFragmentById(R.id.map); se refiere al id del <fragment > dentro del
+<FrameLayout> del fragment de nuestro mapa)
+
+  
+               public View onCreateView(){
+	     View view =  inflater.inflate(R.layout.fragment_frag_mapa, container, false);
+        	     SupportMapFragment mapFragment = (SupportMapFragment) this.getChildFragmentManager().findFragmentById(R.id.map);
+      	     mapFragment.getMapAsync(this);
+                      return view;
+
+	}
+_________________________________________
+
+*********************************************************
+ ********       EN ESTE PUNTO YA DEBE CORRER EL MAPA      *********
+ *********************************************************	
+___________________________________________
+
+1. MOSTRAR DATOS DE UBICACION:
+  latitud, longitud, altura, velocidad, presicion..
+
+_______________________________________________
+
+*>>  en el .java de nuestra activity, creamos las variables relacionadas con los
+TextViews en donde vamos a presentar al informacion, y dos variables de tipo
+switch(OJO: los switch son interruptores)
+
+          public class Act2mapa extends AppCompatActivity {
+
+                        TextView tv_lat, tv_lon, tv_alt, tv_acc, tv_sped, tv_adre;
+                        Switch sw_locationUpdate, sw_gps
+
+_____________________________________________
+*> en el metodo onCreate, relacionamos las variables creadas con los correspon
+dientes widgets del .xml
+
+ protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_act2mapa);
+        
+        tv_lat = (TextView) findViewById(R.id.tv_latitud);
+        tv_lon = (TextView) findViewById(R.id.tv_longitud);
+        tv_alt = (TextView) findViewById(R.id.tv_altura);
+        sw_locationUpdate= findViewById(R.id.sw_locationUpdate);
+        sw_gps= findViewById(R.id.sw_gps);
+
+________________________________________
+*> Agregamos libreria de google service, coorespondiente a location, aunque la 
+general la contiene, en el build.gradle, se agrega en /file/project structure
+
+
+	dependencies {
+		implementation 'com.google.android.gms:play-services:12.0.1'
+	}				> SYNC NOW <
+_________________________________________
+*> agregamos los permisos en el manifest
+
+ <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+_________________________________________
+*> en el activity agregamos la clase FusedLocationProviderClient, el cual primero declaramos como
+variable; con la cual se establecen las funciones del servicio de localizacion
+
+              
+	  FusedLocationProviderClient fusedLocationProviderClient;
+
+:________________________________________
+*> en el activity agregamos la clase LocationRequest, el cual primero declaramos como
+variable, y posteriormente
+
+	LocationRequest locationRequest;
+
+___________________________________________
+*> hacemos la incializacion del location request en el metodo onCreate, debajo del relacion
+amiento de los wigets(OJO: tuve que iniciarlizala en la declaracion general de la variable, y 
+utilizar el metodo "create()" (sin new) porque me marcaba error, cuanto el video indicaba
+dentro del metodo oncreate: locationRequest= new LocationRequest())
+
+
+                LocationRequest locationRequest =  LocationRequest.create(); // "new"
+______________________________________
+*> dentro del metodo onCreate, establecemos las propiedades del LocationRequest, el setIntervasl
+es la frecuencia se registra la localizacion, y el fastesInterval: la frecuencia par al amayor actualizacion
+
+         	   locationRequest.setInterval(1000*30);          
+     	   locationRequest.setFastestInterval(1000*50);
+
+_______________________________________
+*> Como una buena practica, los valores de las dos anteriores propuiedades los convertimos
+en constantes, dando clic derecho sobre los numeros: (CD´)/ Refactor / extract / Contanst ,
+
+	    locationRequest.setInterval(1000*DEFAUL_UPDATE_INTERVAL);
+    	    locationRequest.setFastestInterval(1000* FAST_UPDATE_INTERVAL);
+
+_______________________________________
+*> Para el mismo objeto locationRequest, establecemos el metodo setPriority, el cual establece
+ la precision de la localizacion, en aras del ahorro de energia
+
+locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+
+________________________________________
+*> le damos funcionlidad a los dos botones switch, en el metodo onCreate, les agregamos
+los metodos setOnclickListener
+
+		 sw_gps.setOnClickListener(new View.OnClickListener() {
+ 		           @Override
+ 		           public void onClick(View v) {
+                
+     		       }
+  		      });
+
+__________________________________________
+*> establecemos los atributos del metodo onClick de los switcth, dentro de su metodo
+
+	 sw_gps.setOnClickListener(new View.OnClickListener() {
+  	          @Override
+ 	          public void onClick(View v) {
+   	                  if (sw_gps.isChecked()){
+ 	                   locationRequest.setPriority(locationRequest.PRIORITY_HIGH_ACCURACY);
+  	                   tv_sensor.setText("Usando el GPS");
+ 	                   }else{
+ 	                        locationRequest.setPriority(locationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+	                         tv_sensor.setText("Usando Torres + WiiFii");
+   	                }
+     	             }
+	        });
+
+_________________________________________
+*> creamos un nuevo metodo, por fuera del onCreate(), para actualizar elGPS, el cual incluye
+los permisos para tomar el track del GPS, la localizacion actual y la actualizacion de la IU. (OJO: la constante
+PERMISSIONS_FINE_LOCATION, fue creada por nosotros, declarandola enlas variables y dandole valor de 99)
+
+	**   private static final int PERMISSIONS_FINE_LOCATION = 99;
+
+      private void updateGPS(){
+            fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(Act2mapa.this);
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)== PackageManager.PERMISSION_GRANTED){
+                fusedLocationProviderClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
+                    }
+                });
+            }else{
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+                    requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION,}, PERMISSIONS_FINE_LOCATION);
+                }
+            }
+        }
+
+__________________________________________
+*> vamos a reescribir la clase que extiende la clase principal de nuestro activity(extends AppCompatActivity)
+la seleccionamos y damos (CID) / generate / Override method / < buscamos en la amplia lista genera: onRequestPermissionResult
+le damos doble click y se nos genera un nuevo metodo con ese mismo nombre. En donde establecemos un switch
+case, para reconoer el tipo de permiso. este metodo, tiene un codigo de requerimiento(request code), el cual 
+habiamos definido previemanete como la cosntante PERMISSIONS_FINE_LOCATION = 99, 
+
+
+  public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        switch(requestCode){
+            case PERMISSIONS_FINE_LOCATION:
+                if (grantResults[0]==PackageManager.PERMISSION_GRANTED){
+                    updateGPS();
+                }else{
+                    Toast.makeText(this, "Esta aplicacion requiere permisos", Toast.LENGTH_LONG).show();
+                    finish();
+                }
+                break;
+        }
+
+________________________________________________
+*> en nuestro metodo updateGPS(), se encuentra un metodo dentro del if, llamado onSuccess(), el cual, despues 
+de haber obtenido los permisos de onRequestPermissionsResult(), instaura los valores de la localizacion
+dentro de onSuccess(), llamamos un metodo: updateUIValues(); el cual generamos de manera automatica, por
+fuera de este
+
+	 @Override
+                    public void onSuccess(Location location) {
+                      updateUIValues(location);                 
+                    }
+
+_________________________________________________
+*> En el metodo recien creado: updateUIValues(),  le colocamos parametro location, este metodo actualiza los
+objetos TextView, con las nuevas locaciones, le colocamos el parametro a la declaracion de este metodo que 
+se utilizo anteriormente.
+relacionamos las variables de localizacion creadas, con los metodos que entregan esos valores, empero el textView
+latitud, es un texto, y el metodo getLatitude(). es un numero, por lo tanto parceamos con String.valueOf, 
+
+   private void updateUIValues(Location location) {
+        tv_lat.setText(String.valueOf(location.getLatitude()));
+        tv_lon.setText(String.valueOf(location.getLongitude()));
+        tv_acc.setText(String.valueOf(location.getAccuracy()));
+
+    }
+*> como no todos los telefonos pueden registrar la altura y/o velosidad, estos parametros se colocan dentro 
+de un if:
+
+ if (location.hasAltitude()){
+            tv_alt.setText(String.valueOf(location.getAltitude()));
+        }else{
+            tv_alt.setText("No Disponible");
+        }
+        if (location.hasSpeed()){
+            tv_sped.setText(String.valueOf(location.getSpeed()));
+        }else{
+            tv_sped.setText("No Disponible");
+        }
+
+*> llamamos el metodo updateGPS(), al final de nuestro metodo onCreate()
+
+              tv_sensor.setText("Usando Torres + WiiFii");
+                }
+            }
+        });
+        updateGPS();
+    }
