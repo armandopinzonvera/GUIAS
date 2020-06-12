@@ -1,0 +1,47 @@
+////////////////////////////////////////////////////////////////////////////////////////////
+
+	5_GitHub_Git
+	>clonar un proyecto de GitHub
+_______________________________________________________
+>Enlazamos nuestro android studio con github, en la siguiente ruta,
+en donde introducimos el nombre de ususaio y contraseña de github
+
+ 	 file / setting / version control /git
+
+	usuario: armandopinzonvera@gmail.com
+	password: Pinzon*6454
+
+
+> despues de tener enlazada la cuenta de github con el android studio
+el proyecto se sube por
+
+               VCS / Import Into Version Control / share Project on Github
+
+> para clonar proyecto lo hacemos en la pantlla de bienvenida,
+cuando iniciamos un proyecto, cancelamos el carge de proyectos
+para que nos quede la pantalla de inicio, 
+(OJO: previamente debenmos tener la cuenta enlazada y en la panta
+lla de inicio no da la opcion de github, si no de git, empero, cuando se 
+le señala, da la opcion de una direccion URL, )
+
+	Check out Project from version control /  git
+
+> colocamos la direccion URL , de lo que queremos clonar
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

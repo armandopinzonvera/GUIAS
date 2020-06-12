@@ -10,7 +10,8 @@ _________________________________________________________________
 	> colocar Fragment Fijo
 	> Metodo intercambio Fragments
 	> Metodo interior
-
+6. Pequeñas
+    	>Clases singleton; obtener contexto
 
 
 

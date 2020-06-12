@@ -2,7 +2,13 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	2.Fragments
+	>alternar frgaments en un activity
+	>map fragment
+	>pasar informacion de un activity a un fragment
 _____________________________________________________________________
+
+
+
 >los fragments van a ser manejados a traves de frameLayout en el activity,
 en el activity que va a manejar los fragments, le colocamos identificacion(ID)
  al fragmeLayout
@@ -138,6 +144,47 @@ instanciamos en el metodo anterior y lo generamos automaticamente,
             listaInformacion.add(listaProyectos.get(i).getNombre_muestreo()+" - "+listaProyectos.get(i).getId_transecto());
         }
     }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+ 	Pasar informacion de un activity a un fragment
+	y biceversa
+
+---------------------------------------------------------------------------------------
+
+> en el activity que va a enviar la informacion creamos un objeto de la clase del fragment
+que va a resivir
+creamos un objeto de la clase Bundle yle colocamos el metodo put, segun el tipo de 
+dato que queremos enviar, para este caso
+es un float, por tanto es putFloat, pero hai para todos los tipos de variables, ademas le
+indicamos una clave, entre comillas ("lat1"), con la cual lo reconoceremos desde el 
+fragment, y lo mandamos 
+(OJO: se debe realizar en el metodo oncreate, delo contrario no deja colocar el metodo setArguments)
+
+	Mapa mapa1 = new Mapa();
+	Bundle bundle1 = new Bundle();
+	bundle1.putFloat("lat1", lat1);
+	mapa1.setArguments(bundle1);
+
+> en el fragment que recive, en el metodo on create:
+
+ 	 if (getArguments() != null){
+         	   lat2 = getArguments().getFloat("lat1");
+        	    long2= getArguments().getFloat("long1");
+    	    }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -1,0 +1,49 @@
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	6_Otros
+
+	>clases singleton, obtener contexto (this, getAplication contex...
+	>clase singleton, metodos default
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+	>clases singleton, obtener contexto (this, getAplication contex...
+------------------------------------------------------------------------------------
+
+>clases singleton, obtener contexto (this, getAplication contex...
+  Esto parte de un error(projecto: TAS), que ante una clase solitaria(singleton), sin activity, que construi
+  para tomar los datos de conexion, me salia error para colocar el atributo "this",
+ y se soluciono haciendo que la clase extendiera Aplication
+
+	public class Ubicacion extends Application {
+
+
+> ademas se crea una instancia de la misma clase 
+	 private static Ubicacion instance;
+   	 public static Ubicacion get() { return instance; }
+
+
+> se incluye el metodo oncreate
+
+   @Override
+    public void onCreate() {
+        super.onCreate();
+        instance = this;
+    }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	>clase singleton, metodos default
+------------------------------------------------------------------------------------------
+* Para que las clase tenga abceso a los metodos por defecto de los activity, cree una 
+clase singleton a partir de un nuevo activity, indicando que no incluyera el 
+archivo .xml,  con lo cual tuve acceso al metodo 
+onRequestPermissionsResult(int requestCode, @NonNull String[] p..
+
+
+
+
+
+
+
+

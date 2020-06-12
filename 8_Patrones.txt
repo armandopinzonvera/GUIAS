@@ -1,0 +1,74 @@
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	8_Patrones
+------------------------------------------------------------------------------------------------------------
+  POSA (Pattern Oriented Software Architecture)
+  MVC 
+  GOF - se categoriza en creacional(inicializacion y configuracion de objetos)
+	, estructural (separan interfaz de implementacion) y de comportamiento
+	(como describe la comunicacion entre los objetos)
+MVP- se refiere a la estructuracion, no es una arquitectura por si sola
+	modelo (datos)- vista(interfaz)-presentador(logica)
+---------------------------
+1. Singleton
+  Se delimita en una unica instancia, en toda la palicacion de ciertos objetos, para evitar 
+que se formen mucho objetos con la misma informacion haciendo ineficiente la aplicacion
+*se crea un objeto private static de la misma clase que se llame instancia
+
+	public class Conexion{
+	  private static conexion instancia;
+
+ * Se crea un constructor privado, de manera que no se pueda utilizar la key-word new
+  para crear instancias de la clase
+
+	public class Conexion{
+	  private static Conexion instancia;
+	  private Conexion(){   }
+
+* de manera que para obtener instancias de la clase se hace a traves de un metodo, creado
+dentro de esta (OJO: la palabra static permite el acceso mediante la clase)
+
+	public static Conexion getIntancia(){
+	  if(instancia == null){
+	    intancia = new Conexion();
+	  }
+	}
+----------------------------
+2. factory
+devuelve instancia de una clase particular por medio de un identificador
+contiene una clase con un metodo que que define cual instancia de clase utilizar, 
+pero antes pasa por una interfaz, la cual se implementa en las diferentes clases
+
+--------------------------------
+3. MVP
+utilizan una interface, la que se enlaza con un implement con punto-metodo, para
+cada una de las clases involucradas
+* Creamos una interfaz, como creando una clase, sobre la carpeta de java, pero cuando
+abre las especificaciones se quita la indicacion de class, que viene por defecto y se indica
+Interfas
+* ademas creamos dos clases adicionales, una para el modelo y otro el presentador
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

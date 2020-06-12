@@ -1,9 +1,36 @@
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+.gms////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 5. Crear mapa GPS
 
 _____________________________________________________________________________
+
+ 	OVERVIEW
+
+	1. Agregar librerias en build.gradle
+	2.Permisos en el Manifest (Fine & corse location, internet & backgroud location)
+	3. Crear proyecto en  console google Cloud Platform, para optener el KEY
+	4.Agregar el API_KEY al manifest.
+	5.Creamos un view-fragment que albergara la informacion del mapa
+	6. Se colocan objetos <fragment> en los .xml, tanto del activity como del Fragment
+	      ambos con atributo name (el del frgamen: "...gms.maps.SupportMapFragment"),
+	       y el del ativity con "tools" 
+	7. en la clase del fragment se implementa onMapReadyCallback
+	8.en el onCreate del .java del fragment, remplazamos el return, por un objeto View, creamos
+	    el  SupportMapFragmen con getChildFragmentManager  y le colocamos getMapAsync
+	9. se posicionan el fragment-view dentro del activity, con getSupportFragmentManaget()
+
+	<<<<  ya debe salir el mapa >>>>
+
+	10. se crean las variables(.java del activity) relacionas con los widget en donde se va a presentar la 
+	        informacion de la ubicacion, longitud, latitud,altura,velocidad.
+ 	11. 
+	
+
+
+
+
+
 
 1. agregamos las librerias (google.play.service, location, utils, volley  ) del proyecto 
 en el /build.gradle/, que se descargan en el sigueinte URL, el link para la libreria
@@ -40,7 +67,7 @@ __________________________
 
 _________________________
 3. crear el proyecto en la consola de google play para obtener la API
- en google cloud platform: /panel de control/
+ en google console cloud platform: /panel de control/
 
 	https://developers.google.com/maps/documentation/android-sdk/get-api-key
 	https://console.cloud.google.com/google/maps-apis/new?project=i-incentive-276522&folder=&organizationId=
@@ -68,6 +95,8 @@ _______________________________________
   ambos wigets fragments tiene atributo name, pero se dirigen a ubicaciones diferen
   tes, ademas el activity presenta el atributo tools y name,
   ademas ambos tienen su ID
+(OJO: el name de fragment del fragment-view indica SupportMapFragment, mientras
+  el name del fragment del acctiviy señala al .java del Fragment, en tanto tool al .xml)
 
   el activity:
    android:id="@+id/marco_mapa_ac"
@@ -75,12 +104,12 @@ _______________________________________
    tools:layout="@layout/fragment_frag_mapa"
 
   el fragment(mapa):
-  android:id="@+id/map"
+  android:id="@+id/map_name"
   android:name="com.google.android.gms.maps.SupportMapFragment"
 
-> en el codigo del activity que recibe, se ubica normal, primero haciendo la declara
-  cion de una variable para la clase del fragment, luego iniciandola y ubicandola
-  con  getSupportFragmentManager()
+> en el codigo del activity que recibe, se ubica normal(metodo onCreate), primero 
+haciendo la declaracion de una variable para la clase del fragment, luego iniciandola
+ y ubicandola con getSupportFragmentManager()
 
 	 getSupportFragmentManager().beginTransaction()
 	   .replace(R.id.marco_mapa_ac, fragMapa ).commit();
@@ -89,8 +118,9 @@ ____________________________________________
 *> en el java.class del activity con el que vamos a enlazar el fragment, hacemos 
   la relacion, dentro del metodo onCreate(), primero instanciamos la clase.java
   del fragmento, en este caso llamada FragMapa(), luego colocamos el metodo de
-  getSupport.., al cual se le coloca el id del layout-root(layoutmapa) y el id del layout-
-  fragment del activity que recibe(f_mainmapa)
+  getSupport..,begin..,.replace  en el metodo replace referenciamos el id del 
+marco fragment que recibe(contenedorMapa) y el objeto que creamos de la clase 
+del fragment(fragmento), y finalizamos con el metodo commit().
 
 	protected void onCreate() {
 		Fragment fragmento = new FragMapa();
@@ -109,15 +139,15 @@ _______________________________
 6. en el archivo .java del fragment_mapa, en el metodo onCreateView, remplazamos el return por un view, 
 y colocamos los siguientes metodos (OJO: nos sale un error en la ultima linea, y en las opciones del foco rojo,
 seleccionamos: make .. implement..>> con lo cual nos cre el metodo: onMapReady)
-(OJO: tener pendiente que el objeto "map" defindFragmentById(R.id.map); se refiere al id del <fragment > dentro del
-<FrameLayout> del fragment de nuestro mapa)
+(OJO: tener pendiente que el objeto "map" defindFragmentById(R.id.map); se refiere al id del <fragment > 
+dentro del <FrameLayout> del fragment de nuestro mapa)
 
   
                public View onCreateView(){
 	     View view =  inflater.inflate(R.layout.fragment_frag_mapa, container, false);
         	     SupportMapFragment mapFragment = (SupportMapFragment) this.getChildFragmentManager().findFragmentById(R.id.map);
       	     mapFragment.getMapAsync(this);
-                      return view;
+                          return view;
 
 	}
 _________________________________________
@@ -146,6 +176,7 @@ _____________________________________________
 dientes widgets del .xml
 
  protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_act2mapa);
         
@@ -183,12 +214,12 @@ variable, y posteriormente
 
 ___________________________________________
 *> hacemos la incializacion del location request en el metodo onCreate, debajo del relacion
-amiento de los wigets(OJO: tuve que iniciarlizala en la declaracion general de la variable, y 
-utilizar el metodo "create()" (sin new) porque me marcaba error, cuanto el video indicaba
-dentro del metodo oncreate: locationRequest= new LocationRequest())
+amiento de los wigets
+(OJO: cuando se inicicaliza el LocationRequest con new, sale error, por eso se de da click derecho
+y  da la opcion de colocar "RestrictedApi", con lo cual se quita el error)
 
 
-                LocationRequest locationRequest =  LocationRequest.create(); // "new"
+                LocationRequest locationRequest =  new LocationRequest();  
 ______________________________________
 *> dentro del metodo onCreate, establecemos las propiedades del LocationRequest, el setIntervasl
 es la frecuencia se registra la localizacion, y el fastesInterval: la frecuencia par al amayor actualizacion
@@ -210,6 +241,9 @@ _______________________________________
 locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
 
 ________________________________________
+********************************************************
+*****************************************************
+*****************************************************
 *> le damos funcionlidad a los dos botones switch, en el metodo onCreate, les agregamos
 los metodos setOnclickListener
 
@@ -221,6 +255,9 @@ los metodos setOnclickListener
   		      });
 
 __________________________________________
+
+
+*****
 *> establecemos los atributos del metodo onClick de los switcth, dentro de su metodo
 
 	 sw_gps.setOnClickListener(new View.OnClickListener() {
@@ -235,11 +272,14 @@ __________________________________________
    	                }
      	             }
 	        });
-
+******************************************
+*******************************************
+*******************************************
 _________________________________________
 *> creamos un nuevo metodo, por fuera del onCreate(), para actualizar elGPS, el cual incluye
 los permisos para tomar el track del GPS, la localizacion actual y la actualizacion de la IU. (OJO: la constante
 PERMISSIONS_FINE_LOCATION, fue creada por nosotros, declarandola enlas variables y dandole valor de 99)
+(OJO: al pegarse el bloque de codigo, lo rojo es solo importar clases, y colocar el valor de la cosntante señalado abajo)
 
 	**   private static final int PERMISSIONS_FINE_LOCATION = 99;
 
@@ -257,7 +297,9 @@ PERMISSIONS_FINE_LOCATION, fue creada por nosotros, declarandola enlas variables
                 }
             }
         }
-
+*** (OJO: pase el metodo addOnSuccessListener, en donde Android studio coloco lo restante
+, pero me marco error y le aplique la primera opcion que me dio el bombillo rojo y lo soluciono: 
+  "cast:executor")
 __________________________________________
 *> vamos a reescribir la clase que extiende la clase principal de nuestro activity(extends AppCompatActivity)
 la seleccionamos y damos (CID) / generate / Override method / < buscamos en la amplia lista genera: onRequestPermissionResult
@@ -278,7 +320,7 @@ habiamos definido previemanete como la cosntante PERMISSIONS_FINE_LOCATION = 99,
                     finish();
                 }
                 break;
-        }
+        }}
 
 ________________________________________________
 *> en nuestro metodo updateGPS(), se encuentra un metodo dentro del if, llamado onSuccess(), el cual, despues 
@@ -326,3 +368,21 @@ de un if:
         });
         updateGPS();
     }
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ 
+	Colocar ubicacion en el mapa
+______________________________________________________________________________
+> en el archivo .java  del view-fragment que aloja el mapa, creamos una variable GoogleMap
+ 	private GoogleMap mMap;
+
+> en el metodo que se creo con el implement de OnMapReadyCallBack , en el fragment del mapa
+llamado onMapReady()
+
+ mMap = googleMap;
+        mMap.setMyLocationEnabled(true);
+        LatLng miPosicion = new LatLng(lat2, long2);
+        mMap.addMarker(new MarkerOptions().position(miPosicion).title("Mi Ubicacion"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(miPosicion));
+
+

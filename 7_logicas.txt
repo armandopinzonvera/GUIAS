@@ -1,0 +1,117 @@
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	7_Logicas
+
+	1- no aceptar editText vacio
+	2- Mostrar teclado en casilla vacia
+	3- Bloquear boton back 
+	4-Establecer formto decimal
+	5-ubicar String en una variable TextView
+	6- opciones this
+
+
+-----------------------------------------------------------------------------------
+1-> para que el edittext no quede vacio en un onClick de un boton
+
+	if(!nombre.equals(" ")){
+		Intent intent = new Intent()
+	}else{
+		Toast.makeText(this, "", Toast.LENG-...)
+	}
+----------------------------
+2-> para mostrar teclado ante la casilla vacia, con lo cual se insinua se debe llanar el espacio 
+
+	et_nombre requestFocus();
+	InputMethodManager mm = (InputMethodManager)getSystemServices(this, INPUT_METHODS_SERVICES);
+	mm.showSoftInput(et_nombre, InputMethodManagers.SHOW_IMPLICIT)
+--------------------------------------------
+3-> Bloquear boton back que trae por defecto el IU
+ se va a sobreescribir un metodo, que se puede hacer incluyendo "@Override" o seleccionandolo
+del titulo de la clase (CD, generade / override Methods / onBackPressed.
+con dejar vacio el metodo, pierde la funcion que pordefecto tiene de volver
+
+
+	public void onbackPressed(){
+
+	}
+-------------------------------------------------
+4->  Formato decimal
+Se instancia un elemento de la clase DecimalFormat, indicando la cantidad de numeros
+despues del punto con los numerales; 
+
+	 DecimalFormat decimalFormat = new DecimalFormat("#.#####");
+
+** luego se coloca ese objeto mas el metodo format 
+
+	 String lat_des = decimalFormat.format(location.getLatitude());
+--------------------------------------------------
+5->ubicar String en una variable TextView
+
+Solo es utilizar el metodo setText()
+
+	latitud1.setText(lat_des);
+
+
+-------------------------------------------------
+6-> opciones this
+
+ 	getActivity()  --> funciona dentro de un fragment
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
