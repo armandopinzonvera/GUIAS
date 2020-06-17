@@ -9,7 +9,9 @@
 	4-Establecer formto decimal
 	5-ubicar String en una variable TextView
 	6- opciones this
-
+	7- pasar de entero a string
+	8- imprimir en consola (Log)
+	9- saber tipo de una variable
 
 -----------------------------------------------------------------------------------
 1-> para que el edittext no quede vacio en un onClick de un boton
@@ -57,15 +59,50 @@ Solo es utilizar el metodo setText()
 6-> opciones this
 
  	getActivity()  --> funciona dentro de un fragment
+	getAplicationContex()
+
+----------------------------------------------------------------------
+7-> pasar de entero a string
+	
+	int result2 = 8;
+	String dato = String.valueOf(result2);
+
+****  de Float a String
+
+	float fff = 2.1416
+	String str = Float.toString(fff);
 
 
+--------------------------------------------------------------------------
 
 
+8-> Imprimir en consola
+* se declara una variable de tipo Log, y se le coloca un mensaje para identificarla
+    como string, 
+(OJO: los parametros son dos string separados por coma)
 
+	Log.v("FragMapa lat1: " + lat1, " ");
 
+---------------------------------------------------------------------------------
+9-> saber el tipo deuna variable
 
+int myInteger = 10;
+String myString = "Hola";
+double myDouble = 0;
+Person myPerson = new Person();
+short myShort = 20;
 
+System.out.println("myInteger es de tipo " +  ((Object)myInteger).getClass().getSimpleName());
+System.out.println("myString es de tipo " +  ((Object)myString).getClass().getSimpleName());
+System.out.println("myDouble es de tipo " +  ((Object)myDouble).getClass().getSimpleName());
+System.out.println("myPerson es de tipo " +  ((Object)myPerson).getClass().getSimpleName());
+System.out.println("myShort es de tipo " +  ((Object)myShort).getClass().getSimpleName());
 
+________________________________________
+
+10. ver tipo de variable en Log
+
+	Log.v("valor calculus: "+lat, "results: "+((Object)lat).getClass().getSimpleName());
 
 
 

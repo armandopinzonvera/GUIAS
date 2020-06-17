@@ -1,0 +1,38 @@
+/////////////////////////////////////////////////////////////////////////////////////
+
+	9_debug (depurar)
+
+---------------------------------------------------------------------
+> si se utiliza un emulador, este por defecto ya permite realizar el debug, empero
+si se emplea un dispositivo movil, se le debe habilitar, en opciones para desarrolladores
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
