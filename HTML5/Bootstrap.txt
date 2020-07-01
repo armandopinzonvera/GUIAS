@@ -1,0 +1,24 @@
+//////////
+
+-> se crea una carpeta y se abre con VC
+-> se crea un archivo desde VC y se guarda_como .html
+-> se coloca en la primera linea html y VC, nos hace una plantilla
+ -> Colocar Viewport, aunque en la plantilla que hace Visual code, se coloca por defecto
+-> se descarga Boostrap de su pagina ubicandola en la misma carpeta del Html
+-> colocamos e estilo de nuestra carpeta Bootstrap con link-rel-href(en el <head>)
+	
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+
+->se agrega jQuery, en la pagina oficial de jQuery
+    vamos al vinculo de descargar/ Download the compressed, production jQuery 3.5.1
+    y nos abre una pagina con un codigo el cual copiamos y pegamos en un
+    archivo que guardamos como .js
+-> se agrega el enlace para el archivo jquery recien creado
+(OJO: los script se colocan al final antes del cierre de la etiquta body)
+
+	<script src="js/jQuery.js"></script>
+
+-> enlazamos con el archivo de la carpeta js llamado bootstrap..min
+(OJO: primero va el archivo jquery y despues este)
+
+	<script src="js/bootstrap.min.js"></script>

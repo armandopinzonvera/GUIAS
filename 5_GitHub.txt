@@ -28,9 +28,38 @@ le señala, da la opcion de una direccion URL, )
 
 > colocamos la direccion URL , de lo que queremos clonar
 
+------------------------------------------------------------------------------------
+**  se debe configurar el usuario y correo
+  con el gitbash (el terminal de comandos de git), estoy poniendo los mismos
+datos de mi github
+
+$ git config --global user.email "armandopinzonvera@gmail.com"
+$ git config --global user.name "armando"
 
 
+--------------------------------------------------------------------------
 
+git init
+git add .
+git commit  -m
+git remote add origin https://github...
+	(OJO: "fatal remote origin error")
+	git remote set-url https://github...
+git push -u origin master
+git pull origin
+git config --global user.name "armandin"
+git config --global user.email "armando@gmail.com"
+git checkout -b nombre_rama (crea rama y entra)
+git log
+git diff nombre_archivo
+git remote
+
+------
+	mkdir name (crea carpeta)
+	touch color.php (crea archivo)
+	rm color.php (quita archivo)
+
+	
 
 
 
